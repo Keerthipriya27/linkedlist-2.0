@@ -1,0 +1,66 @@
+# swap_pairs_linked_list.py
+
+from typing import Optional, List
+
+# Definition for singly-linked list.
+class ListNode:
+    def __init__(self, val: int = 0, next: Optional['ListNode'] = None):
+        self.val = val
+        self.next = next
+
+class Solution:
+    def swapPairs(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        # Create a dummy node to simplify swapping
+        dummy = ListNode(0)
+        dummy.next = head
+        current = dummy
+
+        while current.next and current.next.next:
+            first = current.next
+            second = current.next.next
+
+            # Swap nodes
+            first.next = second.next
+            second.next = first
+            current.next = second
+
+            # Move current pointer two nodes ahead
+            current = first
+
+        return dummy.next
+
+# Helper function to create a linked list from a list
+def create_linked_list(arr: List[int]) -> Optional[ListNode]:
+    if not arr:
+        return None
+    head = ListNode(arr[0])
+    current = head
+    for val in arr[1:]:
+        current.next = ListNode(val)
+        current = current.next
+    return head
+
+# Helper function to print a linked list
+def print_linked_list(head: Optional[ListNode]) -> None:
+    arr = []
+    while head:
+        arr.append(head.val)
+        head = head.next
+    print(arr)
+
+# Example usage
+if __name__ == "__main__":
+    solution = Solution()
+
+    test_cases = [
+        [1, 2, 3, 4],
+        [],
+        [1],
+        [1, 2, 3]
+    ]
+
+    for arr in test_cases:
+        head = create_linked_list(arr)
+        new_head = solution.swapPairs(head)
+        print(f"Original list: {arr} -> Swapped list: ", end="")
+        print_linked_list(new_head)
